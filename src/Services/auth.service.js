@@ -1,18 +1,8 @@
 class AuthService {
   
-  genarateAccessToken() {
+  saveUser(user) {}
 
-  }
-
-  generateRefreshToken() {
-
-  }
-
-  verifyAccessToken() {
-
-  }
-
-  verifyRefreshToken() {
-    
-  }
+  getUserData(id) {}
 }
+
+module.exports.AuthService = new AuthService();
