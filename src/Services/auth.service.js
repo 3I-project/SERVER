@@ -2,7 +2,13 @@ class AuthService {
   
   saveUser(user) {}
 
-  getUserData(id) {}
+  registrationEmployee(data) {
+    console.log(data, 'Сотрудник успешно зарегистрирован')
+  }
+
+  registrationOrganization(data) {
+    console.log(data, 'организация успешно зарегистрирована')
+  }
 }
 
 module.exports.AuthService = new AuthService();

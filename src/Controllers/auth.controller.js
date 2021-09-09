@@ -1,5 +1,7 @@
 const { tokenService } = require('../Services/token.service');
-const { authService } = require('../Services/auth.service');
+const { AuthService } = require('../Services/auth.service');
+
+const ApiError = require('../Exeptions/exeption');
 
 class AuthController {
   authorization (req, res) {
@@ -9,9 +11,18 @@ class AuthController {
   }
 
   registration(req, res) {
-    res.status(200).send({
-      msg: 'Вы успешно зарегистрированы'
-    })
+    const typeRegistration = req.body.type;
+    const registartionData = req.body.data;
+
+    if(!typeRegistration) throw ApiError.BadRequest('Bad Request');
+
+    if(typeRegistration === 'employee') {
+      AuthService.registrationEmployee(registartionData)
+    } else if (typeRegistration === 'organization') {
+      AuthService.registrationOrganization(registartionData)
+    }
+    
+    res.status(200).send(typeRegistration);
   }
 }
 

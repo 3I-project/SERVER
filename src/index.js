@@ -4,9 +4,12 @@ const express = require('express');
 const app = express();
 
 const { initRoutes } = require('./routes/main');
+const ApiError = require('./middleware/exeption.middleware');
 const db = require('./db/connect');
 
 const PORT = process.env.PORT || 5500;
+
+app.use(express.json());
 
 const start = async () => {
   try {
@@ -15,6 +18,8 @@ const start = async () => {
     })
   
     initRoutes(app);
+
+    app.use(ApiError);
   
     app.listen(PORT, () => console.log(`[OK] Server runing on PORT: ${ PORT }`));
   } catch(err) {
