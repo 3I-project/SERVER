@@ -10,19 +10,30 @@ class AuthController {
     res.status(200).send(tokens);
   }
 
-  registration(req, res) {
+  async registration(req, res) {
     const typeRegistration = req.body.type;
     const registartionData = req.body.data;
 
-    if(!typeRegistration) throw ApiError.BadRequest('Bad Request');
+    if(!typeRegistration) throw ApiError.BadRequest('Отсутствует тип регистрации');
+    if(!registartionData) throw ApiError.BadRequest('Данные отсутствуют');
 
     if(typeRegistration === 'employee') {
-      AuthService.registrationEmployee(registartionData)
+      try {
+        await AuthService.registrationEmployee(registartionData);
+
+        res.status(200).json({
+          status: true, 
+          msg: 'Пользователь успешно создан!'
+        })
+      } catch(err) {
+        res.status(401).json({
+          status: false, 
+          msg: err.message
+        })
+      }
     } else if (typeRegistration === 'organization') {
       AuthService.registrationOrganization(registartionData)
     }
-    
-    res.status(200).send(typeRegistration);
   }
 }
 

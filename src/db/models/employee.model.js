@@ -1,10 +1,11 @@
-const sequelize = require('sequelize');
+const Sequelize = require('sequelize');
+const db = require('../connect');
 
-const EmployeeModel = sequelize.define('employees', {
+const EmployeeModel = db.define('employees', {
   id_employee: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
   first_name: {
     type: Sequelize.STRING(15),
@@ -23,8 +24,12 @@ const EmployeeModel = sequelize.define('employees', {
     defaultValue: false
   },
   reg_date: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
   }
-});
+},
+  {
+    timestamps: false,
+  }
+);
 
 module.exports.EmployeeModel = EmployeeModel;

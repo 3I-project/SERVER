@@ -1,11 +1,23 @@
+const Sequelize = require('sequelize');
+const { EmployeeModel } = require('../db/models/employee.model');
+
 class AuthService {
-  
-  saveUser(user) {}
+  async registrationEmployee(data) {
+    const user = await EmployeeModel.findOne({ where: { first_name: data.first_name }});
 
-  registrationEmployee(data) {
-    console.log(data, 'Сотрудник успешно зарегистрирован')
+    if (user) {
+      throw new Error('Пользователь уже существует!');
+    }
+
+    await EmployeeModel.create({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      password: data.password,
+      isLeader: data?.isLeader,
+      reg_date: Sequelize.literal('CURRENT_TIMESTAMP')
+    })
   }
-
+  
   registrationOrganization(data) {
     console.log(data, 'организация успешно зарегистрирована')
   }
