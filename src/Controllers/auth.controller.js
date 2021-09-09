@@ -14,8 +14,9 @@ class AuthController {
     const typeRegistration = req.body.type;
     const registartionData = req.body.data;
 
-    if(!typeRegistration) throw ApiError.BadRequest('Отсутствует тип регистрации');
-    if(!registartionData) throw ApiError.BadRequest('Данные отсутствуют');
+    if(!typeRegistration || !registartionData) {
+      throw ApiError.BadRequest('1')
+    }
 
     if(typeRegistration === 'employee') {
       try {

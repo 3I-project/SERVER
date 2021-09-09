@@ -7,6 +7,13 @@ const EmployeeModel = db.define('employees', {
     autoIncrement: true,
     primaryKey: true,
   },
+  id_organization: {
+    type: Sequelize.INTEGER,
+  },
+  login: {
+    type: Sequelize.STRING(20),
+    allowNull: false
+  },
   first_name: {
     type: Sequelize.STRING(15),
     allowNull: false
@@ -25,7 +32,7 @@ const EmployeeModel = db.define('employees', {
   },
   reg_date: {
     type: Sequelize.DATE,
-  }
+  },
 },
   {
     timestamps: false,
