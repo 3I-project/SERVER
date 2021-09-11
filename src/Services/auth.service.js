@@ -20,6 +20,7 @@ class AuthService {
         reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
       })
     } catch(err) {
+      console.log(err)
       throw new Error('Не удалось создать пользователя!');
     }
   }

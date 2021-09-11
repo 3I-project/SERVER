@@ -6,6 +6,12 @@ const db = new Sequelize(
   process.env.DB_PASSWORD, 
   {
     dialect: process.env.DB_DIALECT,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
     host: process.env.DB_HOST,
     PORT: process.env.DB_PORT
   }
