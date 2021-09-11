@@ -24,13 +24,9 @@ class TokenService {
   }
 
   verifyAccessToken(access_token) {
-    try {
       const payload = jwt.verify(access_token, process.env.ACCESS_PRIVATE_KEY);
 
       return payload;
-    } catch(err) {
-      return new Error('Token is not valid');
-    }
   }
 
   verifyRefreshToken(refresh_token) {

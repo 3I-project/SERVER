@@ -44,6 +44,19 @@ class AuthService {
       throw new Error('Не удалось создать организацию');
     }
   }
+
+  async signInValidat(login, password, type) {
+    if (!login || !password || !type) {
+      throw new Error('Bad request')
+    }
+
+    const currentModel = type === 'employee' ? EmployeeModel : OrganizationModel;
+
+    const user = await currentModel.findOne({ where: { login: login }});
+    const validPassword = user?.password === password;
+
+    return user && validPassword;
+  }
 }
 
 module.exports.AuthService = new AuthService();

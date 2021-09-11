@@ -4,10 +4,28 @@ const { AuthService } = require('../Services/auth.service');
 const ApiError = require('../Exeptions/exeption');
 
 class AuthController {
-  authorization (req, res) {
-    const tokens =  tokenService.genarateTokens();
+  async authorization (req, res) {
+    try {
+      const { type } = req.body;
+      const { login, password } = req.body.data;
 
-    res.status(200).send(tokens);
+      const user = await AuthService.signInValidat(login, password, type);
+      
+      if (!user) {
+        throw new Error('Неверный логин или пароль');
+      }
+
+      const tokens =  tokenService.genarateTokens();
+      res.status(200).send({
+        status: true,
+        tokens: tokens
+      });
+    } catch(err) {
+      res.status(401).json({
+        status: false,
+        msg: err.message
+      })
+    }
   }
 
   async registration(req, res) {
