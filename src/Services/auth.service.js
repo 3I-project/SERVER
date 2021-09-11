@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { EmployeeModel } = require('../db/models/employee.model');
+const { OrganizationModel } = require('../db/models/organization.model');
 
 class AuthService {
   async registrationEmployee(data) {
@@ -20,13 +21,28 @@ class AuthService {
         reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
       })
     } catch(err) {
-      console.log(err)
       throw new Error('Не удалось создать пользователя!');
     }
   }
   
-  registrationOrganization(data) {
-    console.log(data, 'организация успешно зарегистрирована')
+  async registrationOrganization(data) {
+    const organization = await OrganizationModel.findOne({ where: { login: data.login }});
+    if(organization) {
+      throw new Error('Организация уже зарегистрирована');
+    }
+
+    try {
+      await OrganizationModel.create({
+        login: data.login,
+        name: data.name,
+        password: data.password,
+        address: data.address,
+        reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
+      })
+    } catch(err) {
+      console.log(err)
+      throw new Error('Не удалось создать организацию');
+    }
   }
 }
 

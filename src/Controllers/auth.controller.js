@@ -24,7 +24,7 @@ class AuthController {
 
         res.status(200).json({
           status: true, 
-          msg: 'Пользователь успешно создан!'
+          msg: 'Пользователь успешно создан'
         })
       } catch(err) {
         res.status(401).json({
@@ -33,7 +33,19 @@ class AuthController {
         })
       }
     } else if (typeRegistration === 'organization') {
-      AuthService.registrationOrganization(registartionData)
+      try {
+        await AuthService.registrationOrganization(registartionData);
+
+        res.status(200).json({
+          status: true, 
+          msg: 'Организация успешно зарегистрирована в системе'
+        })
+      } catch (err) {
+        res.status(401).json({
+          status: false,
+          msg: err.message
+        });
+      }
     }
   }
 }

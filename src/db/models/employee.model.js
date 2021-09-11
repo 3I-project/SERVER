@@ -4,8 +4,8 @@ const db = require('../connect');
 const EmployeeModel = db.define('employees', {
   id_employee: {
     type: Sequelize.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true
   },
   id_organization: {
     type: Sequelize.INTEGER,
