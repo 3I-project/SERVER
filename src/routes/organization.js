@@ -2,8 +2,9 @@ const router = require('express').Router();
 
 const { OrganizationController } = require('../Controllers/organization.controller');
 
-router.get('/all-organizations', OrganizationController.getAllorganization);
+router.get('/all', OrganizationController.getAllorganization);
+router.get('/search', OrganizationController.getOrganizationBySearch);
 
 module.exports.init = (app, apiVersion) => {
-    app.use(`${apiVersion}/org`, router);
+    app.use(`${apiVersion}/organization`, router);
 }
