@@ -1,7 +1,11 @@
 const Sequelize = require('sequelize');
+
+const { EmployeeModel } = require('./employee.model');
+const { IdeaModel } = require('./idea.model');
+
 const db = require('../connect');
 
-module.exports.OrganizationModel = db.define('organizations', {
+const OrganizationModel = db.define('organizations', {
     id_organization: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -30,4 +34,16 @@ module.exports.OrganizationModel = db.define('organizations', {
     {
         timestamps: false,
     }
-)
+);
+
+OrganizationModel.hasMany(EmployeeModel, { 
+    onDelete: "cascade", 
+    foreignKey: 'id_organization'
+});
+
+OrganizationModel.hasMany(IdeaModel, {
+    onDelete: "cascade", 
+    foreignKey: 'id_organization'
+});
+
+module.exports.OrganizationModel = OrganizationModel;
