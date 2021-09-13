@@ -2,9 +2,11 @@ const jwt = require('jsonwebtoken');
 
 class TokenService {
 
-  genarateTokens() {
+  genarateTokens(user, type) {
     const payload = {
-      login: 'TankistPro'
+      id_employee: user?.id_employee,
+      id_organization: user.id_organization,
+      login: user.login
     }
 
     const access_token = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {

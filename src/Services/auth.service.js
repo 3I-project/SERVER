@@ -45,7 +45,7 @@ class AuthService {
     }
   }
 
-  async signInValidat(login, password, type) {
+  async getUser(login, password, type) {
     if (!login || !password || !type) {
       throw new Error('Bad request')
     }
@@ -54,8 +54,10 @@ class AuthService {
 
     const user = await currentModel.findOne({ where: { login: login }});
     const validPassword = user?.password === password;
+    
+    if(!user || !validPassword) return
 
-    return user && validPassword;
+    return user;
   }
 }
 

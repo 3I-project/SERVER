@@ -9,13 +9,14 @@ class AuthController {
       const { type } = req.body;
       const { login, password } = req.body.data;
 
-      const user = await AuthService.signInValidat(login, password, type);
+      const user = await AuthService.getUser(login, password, type);
       
       if (!user) {
         throw new Error('Неверный логин или пароль');
       }
 
-      const tokens =  tokenService.genarateTokens();
+      const tokens =  tokenService.genarateTokens(user, type);
+      
       res.status(200).send({
         status: true,
         tokens: tokens

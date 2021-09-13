@@ -9,10 +9,12 @@ const IdeaModel = db.define('ideas', {
         autoIncrement: true
     },
     id_organization: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allownull: true
     },
     id_employee: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allownull: true
     },
     title: {
         type: Sequelize.STRING(50),

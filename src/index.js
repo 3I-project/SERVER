@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fileUpload = require('express-fileupload');
 
 const express = require('express');
 const app = express();
@@ -16,6 +17,8 @@ const start = async () => {
     await db.sync().then(() => {
       console.log('[OK] DataBase connected!')
     })
+
+    app.use(fileUpload());
   
     initRoutes(app);
 
