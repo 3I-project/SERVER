@@ -7,10 +7,8 @@ class IdeaController {
         try {
             const token = req.headers.authorization;
             const reqPayload = req.body;
-            
-            const userPayload = tokenService.verifyAccessToken(token);
 
-            console.log(userPayload);
+            const userPayload = tokenService.verifyAccessToken(token);
 
             const saveIdea = await IdeaService.createIdea(reqPayload, userPayload);
 
@@ -31,7 +29,7 @@ class IdeaController {
     }
 
     getAllIdeas(req, res) {
-        
+
     }
 }
 

@@ -4,7 +4,6 @@ const { IdeaModel } = require('../db/models/idea.model');
 
 class IdeaService {
     async createIdea(payload, user) {
-        console.log(user)
         const idea = await IdeaModel.create({
             id_organization: user.id_organization,
             id_employee: user?.id_employee,

@@ -10,13 +10,13 @@ class AuthController {
       const { login, password } = req.body.data;
 
       const user = await AuthService.getUser(login, password, type);
-      
+
       if (!user) {
         throw new Error('Неверный логин или пароль');
       }
 
-      const tokens =  tokenService.genarateTokens(user, type);
-      
+      const tokens =  tokenService.generateTokens(user, type);
+
       res.status(200).send({
         status: true,
         tokens: tokens
@@ -42,12 +42,12 @@ class AuthController {
         await AuthService.registrationEmployee(registartionData);
 
         res.status(200).json({
-          status: true, 
+          status: true,
           msg: 'Пользователь успешно создан'
         })
       } catch(err) {
         res.status(401).json({
-          status: false, 
+          status: false,
           msg: err.message
         })
       }
@@ -56,7 +56,7 @@ class AuthController {
         await AuthService.registrationOrganization(registartionData);
 
         res.status(200).json({
-          status: true, 
+          status: true,
           msg: 'Организация успешно зарегистрирована в системе'
         })
       } catch (err) {

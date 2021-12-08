@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 class TokenService {
 
-  genarateTokens(user, type) {
+  generateTokens(user, type) {
     const payload = {
       id_employee: user?.id_employee,
       id_organization: user.id_organization,
@@ -20,25 +20,21 @@ class TokenService {
     );
 
     return {
-      access_token, 
+      access_token,
       refresh_token
     };
   }
 
   verifyAccessToken(access_token) {
-      const payload = jwt.verify(access_token, process.env.ACCESS_PRIVATE_KEY);
+    const payload = jwt.verify(access_token, process.env.ACCESS_PRIVATE_KEY);
 
-      return payload;
+    return payload;
   }
 
   verifyRefreshToken(refresh_token) {
-    try {
       const payload = jwt.verify(refresh_token, process.env.REFRESH_PRIVATE_KEY);
 
       return payload;
-    } catch(err) {
-      return new Error('Token is not valid');
-    }
   }
 }
 
