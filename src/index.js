@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 
 const { initRoutes } = require('./routes/main');
+const AuthProtect = require('./middleware/authorizationProtection.middleware')
 const db = require('./db/connect');
 
 const PORT = process.env.PORT || 5500;
@@ -18,9 +19,9 @@ const start = async () => {
     })
 
     // app.use(fileUpload());
+    app.use(AuthProtect)
 
     initRoutes(app);
-
 
     app.listen(PORT, () => console.log(`[OK] Server runing on PORT: ${ PORT }`));
   } catch(err) {

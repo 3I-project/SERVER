@@ -3,14 +3,12 @@ const { IdeaService } = require('../Services/idea.service');
 const { tokenService } = require('../Services/token.service');
 
 class IdeaController {
+
     async createIdea(req, res) {
         try {
-            const token = req.headers.authorization;
             const reqPayload = req.body;
 
-            const userPayload = tokenService.verifyAccessToken(token);
-
-            const saveIdea = await IdeaService.createIdea(reqPayload, userPayload);
+            const saveIdea = await IdeaService.createIdea(reqPayload, req.tokenPayload);
 
             if(!saveIdea) {
                 throw new Error('Не удалось добавить идею')
