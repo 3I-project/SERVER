@@ -12,10 +12,8 @@ module.exports = (req, res, next) => {
         }
 
         const userPayload = tokenService.verifyAccessToken(token);
-        console.log(userPayload)
 
         req.tokenPayload = userPayload;
-
         next()
     } catch (err) {
         res.status(401).json({
