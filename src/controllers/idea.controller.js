@@ -1,4 +1,4 @@
-const { IdeaService } = require('../Services/idea.service');
+const { IdeaService } = require('../services/idea.service');
 
 class IdeaController {
 
@@ -26,11 +26,11 @@ class IdeaController {
 
     async getAllIdeas(req, res) {
         try {
-            const filterType = req.query.filterBy;   
+            const filterType = req.query.filterBy;
         } catch (e) {
-            
+
         }
-        
+
         const { id_employee, id_organization } = req.tokenPayload;
 
         let ideas = null;

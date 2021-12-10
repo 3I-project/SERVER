@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { OrganizationController } = require('../Controllers/organization.controller');
+const { OrganizationController } = require('../controllers/organization.controller');
 
 router.get('/all', OrganizationController.getAllorganization);
 router.get('/search', OrganizationController.getOrganizationBySearch);

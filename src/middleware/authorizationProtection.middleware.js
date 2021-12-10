@@ -1,4 +1,4 @@
-const {tokenService} = require("../Services/token.service");
+const {tokenService} = require("../services/token.service");
 
 module.exports = (req, res, next) => {
     try {

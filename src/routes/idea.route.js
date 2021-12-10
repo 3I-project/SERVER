@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { IdeaController } = require('../Controllers/idea.controller');
+const { IdeaController } = require('../controllers/idea.controller');
 
 const AuthProtect = require('../middleware/authorizationProtection.middleware');
 
