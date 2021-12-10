@@ -1,16 +1,22 @@
 require('dotenv').config();
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const express = require('express');
 const app = express();
 
 const { initRoutes } = require('./routes/main');
-const AuthProtect = require('./middleware/authorizationProtection.middleware')
+// const AuthProtect = require('./middleware/authorizationProtection.middleware')
 const db = require('./db/connect');
 
 const PORT = process.env.PORT || 5500;
 
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors({
+  origin: '*'
+}));
 
 const start = async () => {
   try {
@@ -19,7 +25,7 @@ const start = async () => {
     })
 
     // app.use(fileUpload());
-    app.use(AuthProtect)
+    // app.use(AuthProtect)
 
     initRoutes(app);
 

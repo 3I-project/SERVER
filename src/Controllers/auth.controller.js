@@ -7,6 +7,7 @@ class AuthController {
   async authorization (req, res) {
     try {
       const { type } = req.body;
+      console.log(req.body)
       const { login, password } = req.body.data;
 
       const user = await AuthService.getUser(login, password, type);
@@ -22,7 +23,7 @@ class AuthController {
         tokens: tokens
       });
     } catch(err) {
-      res.status(401).json({
+      res.status(400  ).json({
         status: false,
         msg: err.message
       })
