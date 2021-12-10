@@ -16,13 +16,13 @@ class IdeaService {
     }
 
     async getPostsByUserId (id_employee) {
-        const ideas = await IdeaModel.findAll({ where: {id_employee} })
+        const ideas = await IdeaModel.findAll({ where: {id_employee: id_employee} })
 
         return ideas;
     }
 
     async getPostsByOrganization (id_organization) {
-        const ideas = await IdeaModel.findAll({ where: {id_organization} })
+        const ideas = await IdeaModel.findAll({ where: {id_organization: id_organization} })
 
         return ideas;
     }

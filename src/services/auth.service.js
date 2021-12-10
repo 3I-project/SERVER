@@ -40,7 +40,6 @@ class AuthService {
         reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
       })
     } catch(err) {
-      console.log(err)
       throw new Error('Не удалось создать организацию');
     }
   }
@@ -50,7 +49,7 @@ class AuthService {
       throw new Error('Bad request')
     }
 
-    const user = await this.getUser(login, type);
+    const user = await this.getUserByLogin(login, type);
 
     const validPassword = user?.password === password;
 
@@ -59,11 +58,20 @@ class AuthService {
     return user;
   }
 
-  async getUser (login, type) {
-
+  async getUserByLogin (login, type) {
     const currentModel = type === 'employee' ? EmployeeModel : OrganizationModel;
 
     return await currentModel.findOne({where: {login: login}});
+  }
+
+  async getUserById (id, type) {
+    const currentModel = type === 'employee' ? EmployeeModel : OrganizationModel;
+
+    if (type === 'employee') {
+      return await currentModel.findOne({where: { id_employee: id }});
+    } else {
+      return await currentModel.findOne({where: { id_organization: id }});
+    }
   }
 }
 

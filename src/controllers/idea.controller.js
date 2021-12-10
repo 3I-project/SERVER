@@ -1,4 +1,5 @@
 const { IdeaService } = require('../services/idea.service');
+const { AuthService } = require('../services/auth.service');
 
 class IdeaController {
 
@@ -25,11 +26,7 @@ class IdeaController {
     }
 
     async getAllIdeas(req, res) {
-        try {
-            const filterType = req.query.filterBy;
-        } catch (e) {
-
-        }
+        const filterType = req.query.filterBy;
 
         const { id_employee, id_organization } = req.tokenPayload;
 
@@ -37,14 +34,26 @@ class IdeaController {
 
         if (filterType === 'employee') {
             ideas = await IdeaService.getPostsByUserId(id_employee);
-        } else {
+        } else if (filterType === 'organization' || !filterType) {
             ideas = await  IdeaService.getPostsByOrganization(id_organization)
+
+            for (let i = 0; i < ideas.length; i++) {
+                const id_employee = ideas[i].dataValues.id_employee;
+                let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
+
+                ideas[i].dataValues.author = {
+                    first_name,
+                    last_name,
+                    isLeader,
+                    reg_date
+                }
+            }
         }
 
         if (ideas) {
             res.status(200).json({
                 status: true,
-                ideas,
+                ideas: ideas,
                 length: ideas.length
             })
         }
@@ -54,6 +63,8 @@ class IdeaController {
             message: 'Идеи отсутствуют'
         })
     }
+
+    async filterIdeas() {}
 }
 
 module.exports.IdeaController = new IdeaController();

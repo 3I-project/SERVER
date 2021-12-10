@@ -75,7 +75,7 @@ class AuthController {
     const { login } = req.tokenPayload;
 
     if (req.tokenPayload.id_employee) {
-      user = await AuthService.getUser(login, 'employee');
+      user = await AuthService.getUserByLogin(login, 'employee');
 
       profilePayload = {
         type: 'employee',
@@ -87,7 +87,7 @@ class AuthController {
         reg_date: user.reg_date,
       }
     } else {
-      user = await AuthService.getUser(login, 'organization');
+      user = await AuthService.getUserByLogin(login, 'organization');
 
       profilePayload = {
         type: 'organization',
