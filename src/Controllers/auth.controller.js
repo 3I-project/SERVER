@@ -7,7 +7,6 @@ class AuthController {
   async authorization (req, res) {
     try {
       const { type } = req.body;
-      console.log(req.body)
       const { login, password } = req.body.data;
 
       const user = await AuthService.getUser(login, password, type);

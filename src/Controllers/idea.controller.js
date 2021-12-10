@@ -1,7 +1,5 @@
 const { IdeaService } = require('../Services/idea.service');
 
-const { tokenService } = require('../Services/token.service');
-
 class IdeaController {
 
     async createIdea(req, res) {
@@ -26,8 +24,35 @@ class IdeaController {
         }
     }
 
-    getAllIdeas(req, res) {
+    async getAllIdeas(req, res) {
+        try {
+            const filterType = req.query.filterBy;   
+        } catch (e) {
+            
+        }
+        
+        const { id_employee, id_organization } = req.tokenPayload;
 
+        let ideas = null;
+
+        if (filterType === 'employee') {
+            ideas = await IdeaService.getPostsByUserId(id_employee);
+        } else {
+            ideas = await  IdeaService.getPostsByOrganization(id_organization)
+        }
+
+        if (ideas) {
+            res.status(200).json({
+                status: true,
+                ideas,
+                length: ideas.length
+            })
+        }
+
+        res.status(404).json({
+            status: false,
+            message: 'Идеи отсутствуют'
+        })
     }
 }
 

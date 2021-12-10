@@ -14,6 +14,18 @@ class IdeaService {
 
         return idea
     }
+
+    async getPostsByUserId (id_employee) {
+        const ideas = await IdeaModel.findAll({ where: {id_employee} })
+
+        return ideas;
+    }
+
+    async getPostsByOrganization (id_organization) {
+        const ideas = await IdeaModel.findAll({ where: {id_organization} })
+
+        return ideas;
+    }
 }
 
 module.exports.IdeaService = new IdeaService();
