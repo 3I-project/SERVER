@@ -64,7 +64,31 @@ class IdeaController {
         })
     }
 
-    async filterIdeas() {}
+    async filterIdeas(req, res) {
+        const filterString = req.query.q;
+
+        const { id_organization } = req.tokenPayload;
+
+        const filterItems = await IdeaService.filterBySubString(id_organization, filterString);
+
+        for (let i = 0; i < filterItems.length; i++) {
+            const id_employee = filterItems[i].dataValues.id_employee;
+            let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
+            
+
+            filterItems[i].dataValues.author = {
+                first_name,
+                last_name,
+                isLeader,
+                reg_date
+            }
+        }
+
+        res.status(200).json({
+            status: true,
+            filter: filterItems
+        })
+    }
 }
 
 module.exports.IdeaController = new IdeaController();

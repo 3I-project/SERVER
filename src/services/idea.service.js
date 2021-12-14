@@ -26,6 +26,22 @@ class IdeaService {
 
         return ideas;
     }
+
+    async filterBySubString (id_organization, subString) {
+        const filterItems = await IdeaModel.findAll(
+            {where: 
+                Sequelize.and(
+                    Sequelize.or( 
+                        { title: { [Sequelize.Op.iLike]: `%${subString}%` } },
+                        { message_text: { [Sequelize.Op.iLike]: `%${subString}%` } } 
+                    ),
+                    {id_organization}
+                )
+            }
+        )
+
+        return filterItems;
+    }
 }
 
 module.exports.IdeaService = new IdeaService();
