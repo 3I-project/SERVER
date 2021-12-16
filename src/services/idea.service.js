@@ -23,8 +23,14 @@ class IdeaService {
 
     async getPostsByOrganization (id_organization) {
         const ideas = await IdeaModel.findAll({ where: {id_organization: id_organization} })
-
+        
         return ideas;
+    }
+
+    async getPostByIdeaId (id_idea) {
+        const idea = await IdeaModel.findOne({ where: {id_idea: id_idea}})
+
+        return idea
     }
 
     async filterBySubString (id_organization, subString) {

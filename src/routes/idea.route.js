@@ -8,6 +8,7 @@ router.post('/create', AuthProtect, IdeaController.createIdea);
 
 router.get('/posts', AuthProtect, IdeaController.getAllIdeas);
 router.get('/filter', AuthProtect, IdeaController.filterIdeas);
+router.get('/idea', AuthProtect, IdeaController.getIdea);
 
 module.exports.init = (app, apiVersion) => {
     app.use(`${apiVersion}/idea`, router);
