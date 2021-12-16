@@ -53,8 +53,6 @@ class CommentController {
             }
         }
 
-        console.log(comments)
-
         res.status(200).json({
             status: true,
             comments
