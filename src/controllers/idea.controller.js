@@ -1,5 +1,6 @@
 const { IdeaService } = require('../services/idea.service');
 const { AuthService } = require('../services/auth.service');
+const { CommentService } = require('../services/comment.service');
 
 class IdeaController {
 
@@ -40,6 +41,7 @@ class IdeaController {
             for (let i = 0; i < ideas.length; i++) {
                 const id_employee = ideas[i].dataValues.id_employee;
                 let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
+                let comments = await CommentService.getCommentsByIdeaId(ideas[i].dataValues.id_idea);
 
                 ideas[i].dataValues.author = {
                     first_name,
@@ -47,6 +49,8 @@ class IdeaController {
                     isLeader,
                     reg_date
                 }
+
+                ideas[i].dataValues.commentsLength = comments.length;
             }
         }
 
