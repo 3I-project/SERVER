@@ -14,9 +14,9 @@ module.exports = (req, res, next) => {
         const userPayload = tokenService.verifyAccessToken(token);
 
         req.tokenPayload = userPayload;
-        next()
+        return next()
     } catch (err) {
-        res.status(401).json({
+        return res.status(401).json({
             status: false,
             msg: err.message
         })

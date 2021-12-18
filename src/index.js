@@ -1,7 +1,8 @@
 require('dotenv').config();
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const express = require('express');
 const app = express();
@@ -13,8 +14,11 @@ const PORT = process.env.PORT || 5500;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
 app.use(cors({
-  origin: '*'
+  origin: 'http://localhost:8080',
+  credentials: true,
 }));
 
 const start = async () => {

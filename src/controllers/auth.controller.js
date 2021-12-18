@@ -4,6 +4,48 @@ const { AuthService } = require('../services/auth.service');
 const ApiError = require('../exeptions/exeption');
 
 class AuthController {
+  async refreshTokens(req, res) {
+    const { refresh } = req.cookies;
+
+    console.log(refresh);
+
+    if (!refresh) {
+      res.status(400).json({
+        status: false,
+        msg: 'refresh token missing'
+      })
+    }
+
+    const token = await tokenService.verifyRefreshToken(refresh);
+
+    console.log(token)
+
+    if (!Object.keys(token).length) {
+      res.status(401).json({
+        status: false,
+        msg: 'Invalid token'
+      })
+    }
+
+    const type = token?.id_employee ? 'employee' : 'organization'
+    
+    if (Date.now() > token.exp) {
+      const user = await AuthService.getUserByLogin(token.login, type);
+
+      const tokens =  tokenService.generateTokens(user, type);
+
+      res.status(200).json({
+        status: true,
+        tokens
+      })
+    } else {
+      res.status(200).json({
+        status: false,
+        msg: 'refresh token exp - OK'
+      })
+    }
+  }
+
   async authorization (req, res) {
     try {
       const { type } = req.body;

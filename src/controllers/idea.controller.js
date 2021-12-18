@@ -56,12 +56,12 @@ class IdeaController {
                 ideas: ideas,
                 length: ideas.length
             })
+        } else {
+            res.status(404).json({
+                status: false,
+                message: 'Идеи отсутствуют'
+            })
         }
-
-        res.status(404).json({
-            status: false,
-            message: 'Идеи отсутствуют'
-        })
     }
 
     async getIdea (req, res) {
