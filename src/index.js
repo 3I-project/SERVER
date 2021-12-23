@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: ['http://localhost:8080', 'https://frontend-3i.herokuapp.com'],
   credentials: true,
 }));
 

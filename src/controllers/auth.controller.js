@@ -75,10 +75,6 @@ class AuthController {
     const typeRegistration = req.body.type;
     const registartionData = req.body.data;
 
-    if(!typeRegistration || !registartionData) {
-      throw ApiError.BadRequest('1')
-    }
-
     if(typeRegistration === 'employee') {
       try {
         await AuthService.registrationEmployee(registartionData);
