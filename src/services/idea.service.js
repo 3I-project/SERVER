@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 
 const { IdeaModel } = require('../db/models/idea.model');
+const {AuthService} = require("../services/auth.service");
+const {CommentService} = require("../services/comment.service");
 
 class IdeaService {
     async createIdea(payload, user) {
@@ -16,15 +18,15 @@ class IdeaService {
     }
 
     async getPostsByUserId (id_employee) {
-        const ideas = await IdeaModel.findAll({ where: {id_employee: id_employee} })
+        const ideasData = await IdeaModel.findAll({ where: {id_employee: id_employee} })
 
-        return ideas;
+        return await this._parseIdeas(ideasData);
     }
 
     async getPostsByOrganization (id_organization) {
-        const ideas = await IdeaModel.findAll({ where: {id_organization: id_organization} })
-        
-        return ideas;
+        const ideasData = await IdeaModel.findAll({ where: {id_organization: id_organization} })
+
+        return await this._parseIdeas(ideasData);
     }
 
     async getPostByIdeaId (id_idea) {
@@ -35,18 +37,36 @@ class IdeaService {
 
     async filterBySubString (id_organization, subString) {
         const filterItems = await IdeaModel.findAll(
-            {where: 
+            {where:
                 Sequelize.and(
-                    Sequelize.or( 
+                    Sequelize.or(
                         { title: { [Sequelize.Op.iLike]: `%${subString}%` } },
-                        { message_text: { [Sequelize.Op.iLike]: `%${subString}%` } } 
+                        { message_text: { [Sequelize.Op.iLike]: `%${subString}%` } }
                     ),
                     {id_organization}
                 )
             }
         )
+        return await this._parseIdeas(filterItems);
+    }
 
-        return filterItems;
+    async _parseIdeas(ideas) {
+        for (let i = 0; i < ideas.length; i++) {
+            const id_employee = ideas[i].dataValues.id_employee;
+            let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
+            let comments = await CommentService.getCommentsByIdeaId(ideas[i].dataValues.id_idea);
+
+            ideas[i].dataValues.author = {
+                first_name,
+                last_name,
+                isLeader,
+                reg_date
+            }
+
+            ideas[i].dataValues.commentsCount = comments.length;
+        }
+
+        return ideas;
     }
 }
 

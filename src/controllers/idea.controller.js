@@ -37,21 +37,6 @@ class IdeaController {
             ideas = await IdeaService.getPostsByUserId(id_employee);
         } else if (filterType === 'organization' || !filterType) {
             ideas = await  IdeaService.getPostsByOrganization(id_organization)
-
-            for (let i = 0; i < ideas.length; i++) {
-                const id_employee = ideas[i].dataValues.id_employee;
-                let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
-                let comments = await CommentService.getCommentsByIdeaId(ideas[i].dataValues.id_idea);
-
-                ideas[i].dataValues.author = {
-                    first_name,
-                    last_name,
-                    isLeader,
-                    reg_date
-                }
-
-                ideas[i].dataValues.commentsLength = comments.length;
-            }
         }
 
         if (ideas) {
@@ -76,7 +61,7 @@ class IdeaController {
 
             const { id_employee } = idea;
             const { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee');
-            
+
             idea.dataValues.author = {
                 first_name,
                 last_name,
@@ -102,19 +87,6 @@ class IdeaController {
         const { id_organization } = req.tokenPayload;
 
         const filterItems = await IdeaService.filterBySubString(id_organization, filterString);
-
-        for (let i = 0; i < filterItems.length; i++) {
-            const id_employee = filterItems[i].dataValues.id_employee;
-            let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
-            
-
-            filterItems[i].dataValues.author = {
-                first_name,
-                last_name,
-                isLeader,
-                reg_date
-            }
-        }
 
         res.status(200).json({
             status: true,

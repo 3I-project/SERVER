@@ -1,8 +1,6 @@
 const { tokenService } = require('../services/token.service');
 const { AuthService } = require('../services/auth.service');
 
-const ApiError = require('../exeptions/exeption');
-
 class AuthController {
   async refreshTokens(req, res) {
     const { refresh } = req.cookies;
@@ -28,7 +26,7 @@ class AuthController {
     }
 
     const type = token?.id_employee ? 'employee' : 'organization'
-    
+
     if (Date.now() > token.exp) {
       const user = await AuthService.getUserByLogin(token.login, type);
 

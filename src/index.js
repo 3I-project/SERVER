@@ -1,17 +1,16 @@
 require('dotenv').config();
-// const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+// Создание экземпляра express
 const express = require('express');
 const app = express();
 
 const { initRoutes } = require('./routes/main');
 const db = require('./db/connect');
-
+// Порт на котором работает сервер
 const PORT = process.env.PORT || 5500;
-
+// Подключение промежуточных обработчиков
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -22,17 +21,17 @@ app.use(cors({
 }));
 
 const start = async () => {
+  // Подключение БД
   try {
     await db.sync().then(() => {
       console.log('[OK] DataBase connected!')
     })
-
+    // Подключение инициализация маршрутов
     initRoutes(app);
-
+    // Запуск сервера
     app.listen(PORT, () => console.log(`[OK] Server runing on PORT: ${ PORT }`));
   } catch(err) {
     console.log(`[ERROR] ${ err }`);
   }
 }
-
 start();
