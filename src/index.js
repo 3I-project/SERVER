@@ -10,6 +10,7 @@ const { initRoutes } = require('./routes/main');
 const db = require('./db/connect');
 // Порт на котором работает сервер
 const PORT = process.env.PORT || 5500;
+
 // Подключение промежуточных обработчиков
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,6 +27,7 @@ const start = async () => {
     await db.sync().then(() => {
       console.log('[OK] DataBase connected!')
     })
+    app.use(require('./middleware/response.middleware'));
     // Подключение инициализация маршрутов
     initRoutes(app);
     // Запуск сервера

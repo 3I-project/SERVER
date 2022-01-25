@@ -40,14 +40,12 @@ class IdeaController {
         }
 
         if (ideas) {
-            res.status(200).json({
-                status: true,
+            res.success(200, {
                 ideas: ideas,
                 length: ideas.length
             })
         } else {
-            res.status(404).json({
-                status: false,
+            res.httpError(404, {
                 message: 'Идеи отсутствуют'
             })
         }
@@ -70,12 +68,10 @@ class IdeaController {
             }
 
             res.status(200).json({
-                status: true,
                 idea
             })
         } catch (error) {
-            res.status(400).json({
-                status: false,
+            res.httpError(400, {
                 msg: 'Не удалось получить идею'
             })
         }
@@ -88,8 +84,7 @@ class IdeaController {
 
         const filterItems = await IdeaService.filterBySubString(id_organization, filterString);
 
-        res.status(200).json({
-            status: true,
+        res.success(200, {
             filter: filterItems
         })
     }
