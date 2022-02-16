@@ -2,6 +2,7 @@ require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const multer = require('multer')
 // Создание экземпляра express
 const express = require('express');
 const app = express();

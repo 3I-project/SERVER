@@ -30,6 +30,10 @@ const EmployeeModel = db.define('employees', {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
+  avatarHash: {
+    type: Sequelize.STRING(150),
+    allowNull: true
+  },
   reg_date: {
     type: Sequelize.DATE,
   },
