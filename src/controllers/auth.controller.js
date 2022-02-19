@@ -96,7 +96,7 @@ class AuthController {
           msg: 'Организация успешно зарегистрирована в системе'
         })
       } catch (err) {
-        res.status(401).json({
+        res.status(400).json({
           status: false,
           msg: err.message
         });
@@ -120,6 +120,7 @@ class AuthController {
         first_name: user.first_name,
         last_name: user.last_name,
         isLeader: user.isLeader,
+        avatarUrl: user.avatarHash,
         reg_date: user.reg_date,
       }
     } else {
@@ -130,6 +131,7 @@ class AuthController {
         id_organization: user.id_organization,
         name: user.name,
         address: user.address,
+        avatarUrl: user.avatarHash,
         reg_date: user.reg_date,
       }
     }

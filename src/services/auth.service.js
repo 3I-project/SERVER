@@ -9,7 +9,7 @@ class AuthService {
     if (user) {
       throw new Error('Пользователь уже существует!');
     }
-
+    console.log(data)
     try {
       await EmployeeModel.create({
         id_organization: data.id_organization,
@@ -17,6 +17,7 @@ class AuthService {
         first_name: data.first_name,
         last_name: data.last_name,
         password: data.password,
+        avatarHash: data?.avatarUrl,
         isLeader: data?.isLeader,
         reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
       })
