@@ -19,7 +19,7 @@ class OrganizationController {
     }
 
     async getOrganizationBySearch(req, res) {
-        console.log(req.query.org);
+        // console.log(req.query.org);
         const search = req.query.org;
         
 

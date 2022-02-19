@@ -1,11 +1,12 @@
 const { tokenService } = require('../services/token.service');
 const { AuthService } = require('../services/auth.service');
+const { OrganizationService } = require('../services/organization.service')
 
 class AuthController {
   async refreshTokens(req, res) {
     const { refresh } = req.cookies;
 
-    console.log(refresh);
+    // console.log(refresh);
 
     if (!refresh) {
       res.status(400).json({
@@ -16,7 +17,7 @@ class AuthController {
 
     const token = await tokenService.verifyRefreshToken(refresh);
 
-    console.log(token)
+    // console.log(token)
 
     if (!Object.keys(token).length) {
       res.status(401).json({
@@ -112,11 +113,17 @@ class AuthController {
 
     if (req.tokenPayload.id_employee) {
       user = await AuthService.getUserByLogin(login, 'employee');
-
+      const organization = await OrganizationService.getOrganizationById(user.id_organization);
+      // console.log(user.id_organization, organization)
       profilePayload = {
         type: 'employee',
         id_employee: user.id_employee,
         id_organization: user.id_organization,
+        organization: {
+          name: organization.name,
+          address: organization.address,
+          reg_date: organization.reg_date
+        },
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -183,7 +190,7 @@ class AuthController {
 
     const isLoginExist = await AuthService.getUserByLogin(login, type)
     
-    console.log(isLoginExist)
+    // console.log(isLoginExist)
 
     if (isLoginExist) {
       return res.success(200, {

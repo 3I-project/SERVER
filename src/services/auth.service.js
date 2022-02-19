@@ -9,7 +9,7 @@ class AuthService {
     if (user) {
       throw new Error('Пользователь уже существует!');
     }
-    console.log(data)
+    // console.log(data)
     try {
       await EmployeeModel.create({
         id_organization: data.id_organization,
