@@ -17,6 +17,7 @@ class AuthService {
         first_name: data.first_name,
         last_name: data.last_name,
         password: data.password,
+        email: data.email,
         avatarHash: data?.avatarUrl,
         isLeader: data?.isLeader,
         reg_date: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -62,7 +63,7 @@ class AuthService {
   async getUserByLogin (login, type) {
     const currentModel = type === 'employee' ? EmployeeModel : OrganizationModel;
 
-    return await currentModel.findOne({where: {login: login}});
+    return await currentModel.findOne({where: { login }});
   }
 
   async getUserById (id, type) {
@@ -73,6 +74,12 @@ class AuthService {
     } else {
       return await currentModel.findOne({where: { id_organization: id }});
     }
+  }
+
+  async getUserByEmail (email, type) {
+    const currentModel = type === 'employee' ? EmployeeModel : OrganizationModel;
+
+    return await currentModel.findOne({where: { email }});
   }
 }
 

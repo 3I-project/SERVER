@@ -14,6 +14,10 @@ const EmployeeModel = db.define('employees', {
     type: Sequelize.STRING(20),
     allowNull: false
   },
+  email: {
+    type: Sequelize.STRING(100),
+    allowNull: false
+  },
   first_name: {
     type: Sequelize.STRING(15),
     allowNull: false

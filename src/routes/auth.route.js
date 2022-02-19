@@ -6,6 +6,9 @@ const AuthProtect = require('../middleware/authorizationProtection.middleware');
 router.post('/authorization', authController.authorization);
 router.post('/registration', authController.registration);
 
+router.post('/check-mail', authController.checkEmail);
+router.post('/check-login', authController.checkLogin);
+
 router.get('/refresh', authController.refreshTokens);
 router.get('/me', AuthProtect, authController.getMe);
 

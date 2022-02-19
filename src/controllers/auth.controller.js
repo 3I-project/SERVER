@@ -119,6 +119,7 @@ class AuthController {
         id_organization: user.id_organization,
         first_name: user.first_name,
         last_name: user.last_name,
+        email: user.email,
         isLeader: user.isLeader,
         avatarUrl: user.avatarHash,
         reg_date: user.reg_date,
@@ -147,6 +148,52 @@ class AuthController {
       status: true,
       profile: profilePayload
     });
+  }
+
+  async checkEmail(req, res) {
+    const {email, type} = req.body;
+
+    if (!email || !type) {
+      return res.httpError(400, {
+        message: 'Bad request'
+      })
+    }
+
+    const isEmailExist = await AuthService.getUserByEmail(email, type)
+    
+    if (isEmailExist) {
+      return res.success(200, {
+        isFree: false
+      })
+    }
+
+    return res.success(200, {
+      isFree: true
+    })
+  }
+
+  async checkLogin(req, res) {
+    const {login, type} = req.body;
+
+    if (!login || !type) {
+      return res.httpError(400, {
+        message: 'Bad request'
+      })
+    }
+
+    const isLoginExist = await AuthService.getUserByLogin(login, type)
+    
+    console.log(isLoginExist)
+
+    if (isLoginExist) {
+      return res.success(200, {
+        isFree: false
+      })
+    }
+
+    return res.success(200, {
+      isFree: true
+    })
   }
 }
 

@@ -8,7 +8,7 @@ module.exports.success = (res, statusCode, payload) => {
 
 module.exports.error = (res, statusCode, payload) => {
     return res.status(statusCode).json({
-        status: true,
+        status: false,
         statusCode,
         payload
     });
