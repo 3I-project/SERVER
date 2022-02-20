@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const { IdeaModel } = require('../db/models/idea.model');
+const { IdeaTypeModel } = require('../db/models/ideaType.model');
 const {AuthService} = require("../services/auth.service");
 const {CommentService} = require("../services/comment.service");
 
@@ -55,6 +56,7 @@ class IdeaService {
             const id_employee = ideas[i].dataValues.id_employee;
             let { first_name, last_name, isLeader, reg_date, avatarHash } = await AuthService.getUserById(id_employee, 'employee')
             let comments = await CommentService.getCommentsByIdeaId(ideas[i].dataValues.id_idea);
+            let ideaType = await this._getIdeaType(ideas[i].dataValues.type_id)
 
             ideas[i].dataValues.author = {
                 first_name,
@@ -65,9 +67,17 @@ class IdeaService {
             }
 
             ideas[i].dataValues.commentsCount = comments.length;
+            ideas[i].dataValues.type = ideaType.type;
         }
 
         return ideas;
+    }
+
+    async _getIdeaType(type_id) {
+        console.log(type_id)
+        const ideaType = await IdeaTypeModel.findOne({ where: { type_id }});
+
+        return ideaType;
     }
 }
 

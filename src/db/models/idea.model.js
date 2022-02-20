@@ -24,6 +24,10 @@ const IdeaModel = db.define('ideas', {
         type: Sequelize.TEXT,
         allownull: false
     },
+    type_id: {
+        type: Sequelize.INTEGER,
+        allownull: true
+    },
     created: {
         type: Sequelize.DATE
     }
