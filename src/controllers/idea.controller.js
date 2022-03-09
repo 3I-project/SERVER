@@ -54,23 +54,28 @@ class IdeaController {
     async getIdea (req, res) {
         try {
             const id = req.query.id;
-
             const idea = await IdeaService.getPostByIdeaId(id);
+            
+            // console.log('12', idea)
 
-            const { id_employee } = idea;
-            const { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee');
+            // const { id_employee } = idea;
+            // const { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee');
+            // idea = await IdeaService._parseIdeas(idea)
+            
+            // idea.dataValues.author = {
+            //     first_name,
+            //     last_name,
+            //     isLeader,
+            //     reg_date
+            // }
 
-            idea.dataValues.author = {
-                first_name,
-                last_name,
-                isLeader,
-                reg_date
-            }
+            // idea.dataValues.type = ideaType.type;
 
             res.status(200).json({
                 idea
             })
         } catch (error) {
+            console.log(error)
             res.httpError(400, {
                 msg: 'Не удалось получить идею'
             })
@@ -87,6 +92,12 @@ class IdeaController {
         res.success(200, {
             filter: filterItems
         })
+    }
+
+    async getIdeaTypes(req, res) {
+        const list = await IdeaService.getTypesList()
+
+        res.success(200, list)
     }
 }
 

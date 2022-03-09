@@ -12,6 +12,7 @@ class IdeaService {
             id_employee: user?.id_employee,
             title: payload.title,
             message_text: payload.content,
+            type_id: payload.type_id,
             created: Sequelize.literal('CURRENT_TIMESTAMP')
         })
 
@@ -32,8 +33,8 @@ class IdeaService {
 
     async getPostByIdeaId (id_idea) {
         const idea = await IdeaModel.findOne({ where: {id_idea: id_idea}})
-
-        return idea
+       
+        return await this._parseIdeas([idea]);
     }
 
     async filterBySubString (id_organization, subString) {
@@ -49,6 +50,10 @@ class IdeaService {
             }
         )
         return await this._parseIdeas(filterItems);
+    }
+
+    async getTypesList() {
+        return IdeaTypeModel.findAll();
     }
 
     async _parseIdeas(ideas) {
@@ -69,12 +74,11 @@ class IdeaService {
             ideas[i].dataValues.commentsCount = comments.length;
             ideas[i].dataValues.type = ideaType.type;
         }
-
+        console.log('Тут', ideas)
         return ideas;
     }
 
     async _getIdeaType(type_id) {
-        console.log(type_id)
         const ideaType = await IdeaTypeModel.findOne({ where: { type_id }});
 
         return ideaType;
