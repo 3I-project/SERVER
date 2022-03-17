@@ -18,13 +18,14 @@ class TokenController {
             })
         }
 
-        const {id_employee, id_organization} = userPayload
+        const {id_employee, id_organization, login} = userPayload
 
         return res.success(404, {
             isValid: true,
             payload: {
                 id_employee,
-                id_organization
+                id_organization,
+                login
             }
         })
     }

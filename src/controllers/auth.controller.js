@@ -6,8 +6,6 @@ class AuthController {
   async refreshTokens(req, res) {
     const { refresh } = req.cookies;
 
-    // console.log(refresh);
-
     if (!refresh) {
       res.status(400).json({
         status: false,
@@ -16,8 +14,6 @@ class AuthController {
     }
 
     const token = await tokenService.verifyRefreshToken(refresh);
-
-    // console.log(token)
 
     if (!Object.keys(token).length) {
       res.status(401).json({
@@ -114,7 +110,6 @@ class AuthController {
     if (req.tokenPayload.id_employee) {
       user = await AuthService.getUserByLogin(login, 'employee');
       const organization = await OrganizationService.getOrganizationById(user.id_organization);
-      // console.log(user.id_organization, organization)
       profilePayload = {
         type: 'employee',
         id_employee: user.id_employee,
@@ -167,7 +162,7 @@ class AuthController {
     }
 
     const isEmailExist = await AuthService.getUserByEmail(email, type)
-    
+
     if (isEmailExist) {
       return res.success(200, {
         isFree: false
@@ -189,8 +184,6 @@ class AuthController {
     }
 
     const isLoginExist = await AuthService.getUserByLogin(login, type)
-    
-    // console.log(isLoginExist)
 
     if (isLoginExist) {
       return res.success(200, {
