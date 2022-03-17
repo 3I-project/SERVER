@@ -55,21 +55,6 @@ class IdeaController {
         try {
             const id = req.query.id;
             const idea = await IdeaService.getPostByIdeaId(id);
-            
-            // console.log('12', idea)
-
-            // const { id_employee } = idea;
-            // const { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee');
-            // idea = await IdeaService._parseIdeas(idea)
-            
-            // idea.dataValues.author = {
-            //     first_name,
-            //     last_name,
-            //     isLeader,
-            //     reg_date
-            // }
-
-            // idea.dataValues.type = ideaType.type;
 
             res.status(200).json({
                 idea

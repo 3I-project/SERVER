@@ -26,15 +26,19 @@ class TokenService {
   }
 
   verifyAccessToken(access_token) {
-    const payload = jwt.verify(access_token, process.env.ACCESS_PRIVATE_KEY);
-
-    return payload;
+    try {
+      return jwt.verify(access_token, process.env.ACCESS_PRIVATE_KEY);
+    } catch (e) {
+      return null
+    }
   }
 
   verifyRefreshToken(refresh_token) {
-      const payload = jwt.verify(refresh_token, process.env.REFRESH_PRIVATE_KEY);
-
-      return payload;
+    try {
+      return jwt.verify(refresh_token, process.env.REFRESH_PRIVATE_KEY);
+    } catch (e) {
+      return null
+    }
   }
 }
 
