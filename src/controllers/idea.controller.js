@@ -84,6 +84,23 @@ class IdeaController {
 
         res.success(200, list)
     }
+
+    async getUserPosts(req, res) {
+        const { id_user } = req.params
+
+        if (!id_user) {
+            res.httpError(400, {
+                msg: 'id not found'
+            })
+        }
+
+        const ideas = await IdeaService.getPostsByUserId(id_user)
+
+        res.success(200, {
+            ideas: ideas,
+            length: ideas.length
+        })
+    }
 }
 
 module.exports.IdeaController = new IdeaController();

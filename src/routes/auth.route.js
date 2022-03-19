@@ -11,6 +11,7 @@ router.post('/check-login', authController.checkLogin);
 
 router.get('/refresh', authController.refreshTokens);
 router.get('/me', AuthProtect, authController.getMe);
+router.get('/user/:id', AuthProtect, authController.getUser);
 
 module.exports.init = (app, apiVersoin) => {
   app.use(`${apiVersoin}/auth`, router);

@@ -195,6 +195,22 @@ class AuthController {
       isFree: true
     })
   }
+
+  async getUser (req, res) {
+    const { id } = req.params
+    
+    if (!id) {
+      return res.httpError(400, {
+        message: 'Bad request'
+      })
+    }
+
+    const user = await AuthService.getUserById(id, 'employee')
+
+    return res.success(200, {
+      user
+    })
+  }
 }
 
 module.exports.authController = new AuthController();

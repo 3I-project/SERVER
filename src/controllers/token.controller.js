@@ -6,7 +6,7 @@ class TokenController {
 
         if (!token) {
             return res.httpError(400, {
-                msg: 'Bad request'
+                isValid: false
             })
         }
 

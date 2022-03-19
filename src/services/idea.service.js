@@ -74,7 +74,6 @@ class IdeaService {
             ideas[i].dataValues.commentsCount = comments.length;
             ideas[i].dataValues.type = ideaType.type;
         }
-        console.log('Тут', ideas)
         return ideas;
     }
 
