@@ -7,7 +7,6 @@ const { storageConfig } = require('../config/diskStorage');
 const upload = multer({ storage: storageConfig })
 
 router.post('/avatar', upload.single('avatar'), (req, res) => {
-    // console.log(res)
     res.status(200).json({
         status: true,
         avatarUrl: req.file.filename
