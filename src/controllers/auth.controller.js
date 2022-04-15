@@ -1,6 +1,7 @@
 const { tokenService } = require('../services/token.service');
 const { AuthService } = require('../services/auth.service');
 const { OrganizationService } = require('../services/organization.service')
+const {reCaptchaService } = require('../services/reCaptcha.service');
 
 class AuthController {
   async refreshTokens(req, res) {
@@ -44,7 +45,21 @@ class AuthController {
   async authorization (req, res) {
     try {
       const { type } = req.body;
-      const { login, password } = req.body.data;
+      const { login, password, reCaptchaToken } = req.body.data;
+
+      if (!reCaptchaToken || !reCaptchaToken.length) {
+        return res.httpError(400, {
+          message: 'Bad request'
+        })
+      }
+
+      const response = await reCaptchaService.varifyToken(reCaptchaToken);
+
+      if (!response.status) {
+        return res.httpError(400, {
+          message: 'reCaptcha invalid'
+        })
+      }
 
       const user = await AuthService.checkUser(login, password, type);
 
