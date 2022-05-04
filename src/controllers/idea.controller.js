@@ -38,7 +38,7 @@ class IdeaController {
 
             res.status(200).json({
                 status: true,
-                file: 'Идея успешно обновлена'
+                msg: 'Идея успешно обновлена'
             })
         } catch(err) {
             res.status(400).json({
