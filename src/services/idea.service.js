@@ -4,10 +4,11 @@ const { IdeaModel } = require('../db/models/idea.model');
 const { IdeaTypeModel } = require('../db/models/ideaType.model');
 const {AuthService} = require("../services/auth.service");
 const {CommentService} = require("../services/comment.service");
+const {where} = require("sequelize");
 
 class IdeaService {
     async createIdea(payload, user) {
-        const idea = await IdeaModel.create({
+        return await IdeaModel.create({
             id_organization: user.id_organization,
             id_employee: user?.id_employee,
             title: payload.title,
@@ -15,8 +16,15 @@ class IdeaService {
             type_id: payload.type_id,
             created: Sequelize.literal('CURRENT_TIMESTAMP')
         })
+    }
 
-        return idea
+    async updateIdea(payload, user) {
+        return await IdeaModel.update({
+            title: payload.title,
+            message_text: payload.content,
+        }, {
+            where: { id_idea: payload.id_idea }
+        })
     }
 
     async getPostsByUserId (id_employee) {
@@ -33,7 +41,7 @@ class IdeaService {
 
     async getPostByIdeaId (id_idea) {
         const idea = await IdeaModel.findOne({ where: {id_idea: id_idea}})
-       
+
         return await this._parseIdeas([idea]);
     }
 

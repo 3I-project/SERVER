@@ -26,6 +26,28 @@ class IdeaController {
         }
     }
 
+    async updateIdea(req, res) {
+        try {
+            const reqPayload = req.body;
+
+            const updateIdea = await IdeaService.updateIdea(reqPayload, req.tokenPayload);
+
+            if (!updateIdea[0]) {
+                throw new Error('Не удалось обновить идею')
+            }
+
+            res.status(200).json({
+                status: true,
+                file: 'Идея успешно обновлена'
+            })
+        } catch(err) {
+            res.status(400).json({
+                status: false,
+                msg: err.message
+            })
+        }
+    }
+
     async getAllIdeas(req, res) {
         const filterType = req.query.filterBy;
 

@@ -5,6 +5,7 @@ const { IdeaController } = require('../controllers/idea.controller');
 const AuthProtect = require('../middleware/authorizationProtection.middleware');
 
 router.post('/create', AuthProtect, IdeaController.createIdea);
+router.post('/update-post', AuthProtect, IdeaController.updateIdea);
 
 router.get('/posts', AuthProtect, IdeaController.getAllIdeas);
 router.get('/filter', AuthProtect, IdeaController.filterIdeas);
