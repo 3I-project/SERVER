@@ -37,6 +37,23 @@ class IdeaReactionsController {
             })
         }
     }
+
+    async getIdeaReactions(req, res) {
+        const { idea_id } = req.query;
+        console.log(idea_id)
+        if (!idea_id) {
+            return res.httpError(400, {
+                msg: "idea_id not found"
+            })
+        }
+
+        const {likes, dislikes} = await IdeaReactionsService.getIdeaReactions(idea_id);
+
+        return res.success(200, {
+            likes: likes.length,
+            dislikes: dislikes.length
+        })
+    }
 }
 
 module.exports.IdeaReactionsController = new IdeaReactionsController();

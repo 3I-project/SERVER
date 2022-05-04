@@ -1,4 +1,5 @@
 const { IdeaReactionsModel } = require('../db/models/ideareactions.model');
+const {Sequelize} = require("sequelize");
 
 class IdeaReactionsService {
     /**
@@ -29,6 +30,16 @@ class IdeaReactionsService {
             return true
         } catch (e) {
             return false
+        }
+    }
+
+    async getIdeaReactions(idea_id) {
+        const likes = await IdeaReactionsModel.findAll({ where: Sequelize.and({ idea_id }, { type: 1 }) })
+        const dislikes = await IdeaReactionsModel.findAll({ where: Sequelize.and({ idea_id }, { type: -1 }) })
+
+        return {
+            likes,
+            dislikes
         }
     }
 }

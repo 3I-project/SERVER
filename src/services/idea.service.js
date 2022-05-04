@@ -4,6 +4,7 @@ const { IdeaModel } = require('../db/models/idea.model');
 const { IdeaTypeModel } = require('../db/models/ideaType.model');
 const {AuthService} = require("../services/auth.service");
 const {CommentService} = require("../services/comment.service");
+const { IdeaReactionsService } = require("../services/ideaReactions.service");
 const {where} = require("sequelize");
 
 class IdeaService {
@@ -69,6 +70,7 @@ class IdeaService {
             const id_employee = ideas[i].dataValues.id_employee;
             let { first_name, last_name, isLeader, reg_date, avatarHash } = await AuthService.getUserById(id_employee, 'employee')
             let comments = await CommentService.getCommentsByIdeaId(ideas[i].dataValues.id_idea);
+            const { likes, dislikes } = await IdeaReactionsService.getIdeaReactions(ideas[i].dataValues.id_idea);
             let ideaType = await this._getIdeaType(ideas[i].dataValues.type_id)
 
             ideas[i].dataValues.author = {
@@ -81,6 +83,10 @@ class IdeaService {
 
             ideas[i].dataValues.commentsCount = comments.length;
             ideas[i].dataValues.type = ideaType.type;
+            ideas[i].dataValues.reactions = {
+                likes: likes.length,
+                dislikes: dislikes.length
+            }
         }
         return ideas;
     }

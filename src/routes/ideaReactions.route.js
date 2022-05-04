@@ -6,6 +6,8 @@ const { IdeaReactionsController } = require('../controllers/ideaReactions.contro
 
 router.post('/set', AuthProtect, IdeaReactionsController.setReaction);
 
+router.get('/', AuthProtect, IdeaReactionsController.getIdeaReactions);
+
 module.exports.init = (app, apiVersion) => {
     app.use(`${apiVersion}/reaction`, router);
 }
