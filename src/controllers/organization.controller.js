@@ -1,8 +1,7 @@
 const { OrganizationModel } = require('../db/models/organization.model');
 const { OrganizationService } = require('../services/organization.service');
 
-const  Sequelize = require('sequelize')
-const db = require('../db/connect');
+const Sequelize = require('sequelize')
 
 class OrganizationController {
     async getAllorganization(req, res) {
