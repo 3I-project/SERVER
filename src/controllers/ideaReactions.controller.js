@@ -19,19 +19,21 @@ class IdeaReactionsController {
             const existIdea = await IdeaService.getPostByIdeaId(idea_id);
 
             if (!existIdea) {
-                throw new Error("Поста с таким id не найдено")
+                throw new Error("Пост не найден")
             }
 
-            const updateIdea = await IdeaReactionsService.setReaction(id_employee, id_organization, {idea_id, type})
-            console.log(updateIdea)
+            const setReaction = await IdeaReactionsService.setReaction(id_employee, id_organization, {idea_id, type})
+
+            if (!setReaction) {
+                throw new Error("Не удалось добавить \/ обновить реакцию на идею")
+            }
 
             return res.success(200, {
                 msg: 'Успешно'
             })
         } catch (err) {
-            console.log(err)
             return res.httpError(400, {
-                message: err
+                message: err.message
             })
         }
     }

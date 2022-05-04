@@ -15,15 +15,21 @@ class IdeaReactionsService {
      * @param {number} payload.idea_id - id идей
      * @param {number} payload.type - тип реакции
      *
-     * @return {boolean} - усешное добавление/обновление реакции
+     * @return {Promise<boolean>} - усешное добавление/обновление реакции
      * */
     async setReaction(id_employee, id_organization, payload) {
-        return await IdeaReactionsModel.create({
-            user_id: id_employee,
-            idea_id: payload.idea_id,
-            org_id: id_organization,
-            type: payload.type
-        })
+        try {
+            await IdeaReactionsModel.create({
+                user_id: id_employee,
+                idea_id: payload.idea_id,
+                org_id: id_organization,
+                type: payload.type
+            })
+
+            return true
+        } catch (e) {
+            return false
+        }
     }
 }
 
