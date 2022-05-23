@@ -16,21 +16,51 @@ class IdeaReactionsService {
      * @param {number} payload.idea_id - id идей
      * @param {number} payload.type - тип реакции
      *
-     * @return {Promise<boolean>} - усешное добавление/обновление реакции
+     * @return {Promise<Object>} - усешное добавление/обновление реакции
      * */
     async setReaction(id_employee, id_organization, payload) {
-        try {
-            await IdeaReactionsModel.create({
-                user_id: id_employee,
-                idea_id: payload.idea_id,
-                org_id: id_organization,
-                type: payload.type
-            })
+            const isSetReaction = await this.isUserSetReaction(id_employee, payload.idea_id);
+            let update = false
 
-            return true
-        } catch (e) {
-            return false
-        }
+            if (isSetReaction && payload.type === isSetReaction) {
+                throw new Error('Вы уже поставили данную реакцию!')
+            }
+
+            if (isSetReaction &&  payload.type !== isSetReaction) {
+                await IdeaReactionsModel.update({
+                    type: payload.type
+                }, {
+                    where: Sequelize.and( {  idea_id: payload.idea_id }, { user_id: id_employee })
+                })
+
+                update = true;
+            } else {
+                await IdeaReactionsModel.create({
+                    user_id: id_employee,
+                    idea_id: payload.idea_id,
+                    org_id: id_organization,
+                    type: payload.type
+                })
+
+                update = false;
+            }
+
+            return {
+                status: true,
+                update
+            }
+    }
+
+    /**
+     * Проверка, что пользователь уже выставлял на идею реакцию
+     *
+     * @async
+     * @return {Object}
+    * */
+    async isUserSetReaction(id_employee, idea_id) {
+        const reaction = await IdeaReactionsModel.findOne({ where: Sequelize.and( { idea_id }, { user_id: id_employee }) });
+
+        return reaction?.dataValues.type || null;
     }
 
     async getIdeaReactions(idea_id) {

@@ -24,12 +24,9 @@ class IdeaReactionsController {
 
             const setReaction = await IdeaReactionsService.setReaction(id_employee, id_organization, {idea_id, type})
 
-            if (!setReaction) {
-                throw new Error("Не удалось добавить \/ обновить реакцию на идею")
-            }
-
             return res.success(200, {
-                msg: 'Успешно'
+                msg: 'Реакция успешно выставлена',
+                update: setReaction.update
             })
         } catch (err) {
             return res.httpError(400, {
@@ -40,7 +37,7 @@ class IdeaReactionsController {
 
     async getIdeaReactions(req, res) {
         const { idea_id } = req.query;
-        console.log(idea_id)
+
         if (!idea_id) {
             return res.httpError(400, {
                 msg: "idea_id not found"
