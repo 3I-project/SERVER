@@ -2,6 +2,8 @@ const { IdeaService } = require('../services/idea.service');
 const { AuthService } = require('../services/auth.service');
 const { CommentService } = require('../services/comment.service');
 
+const { SortFilterEnum } = require ('../enums/sortFilter.enum');
+
 class IdeaController {
 
     async createIdea(req, res) {
@@ -91,10 +93,31 @@ class IdeaController {
 
     async filterIdeas(req, res) {
         const filterString = req.query.q;
+        const { filterType } = req.query;
 
         const { id_organization } = req.tokenPayload;
 
-        const filterItems = await IdeaService.filterBySubString(id_organization, filterString);
+        let filterItems = await IdeaService.filterBySubString(id_organization, filterString);
+
+        if (filterItems && SortFilterEnum.arraySortEnums().includes(filterType)) {
+            if (filterType === SortFilterEnum.enums.FRESH_IDEAS) {
+                filterItems = filterItems.sort((a, b) => {
+                    return new Date(b.created) - new Date(a.created)
+                })
+            } else if (filterType === SortFilterEnum.enums.LIKED_IDEAS) {
+                filterItems = filterItems.sort((a, b) => {
+                    return b.dataValues.reactions.likes - a.dataValues.reactions.likes >= 0 ? 1 : -1
+                })
+            } else if (filterType === SortFilterEnum.enums.NEGATIVE_IDEAS) {
+                filterItems = filterItems.sort((a, b) => {
+                    return b.dataValues.reactions.dislikes - a.dataValues.reactions.dislikes >= 0 ? 1 : -1
+                })
+            } else if (filterType === SortFilterEnum.enums.DISCUSSED_IDEAS) {
+                filterItems = filterItems.sort((a, b) => {
+                    return b.dataValues.commentsCount - a.dataValues.commentsCount
+                })
+            }
+        }
 
         res.success(200, {
             filter: filterItems
