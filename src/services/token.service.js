@@ -10,7 +10,7 @@ class TokenService {
     }
 
     const access_token = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {
-        expiresIn: '1h'
+        expiresIn: '5h'
       }
     );
 
