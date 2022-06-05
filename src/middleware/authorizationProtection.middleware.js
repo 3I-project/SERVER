@@ -5,13 +5,21 @@ module.exports = (req, res, next) => {
         const token = req.headers["authorization"];
 
         if (!token) {
-            res.status(401).json({
+            return res.status(401).json({
                 status: false,
                 msg: "Missing token"
             })
         }
 
         req.tokenPayload = tokenService.verifyAccessToken(token);
+
+        if (!req.tokenPayload) {
+            return res.status(401).json({
+                status: false,
+                msg: "Token not valid"
+            })
+        }
+
         return next()
     } catch (err) {
         return res.status(401).json({
