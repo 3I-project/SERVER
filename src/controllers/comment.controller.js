@@ -8,13 +8,17 @@ class CommentController {
     async createComment(req, res) {
         try {
             const commentPayload = req.body;
-            const { id_employee } = req.tokenPayload;
+            const {
+                id_employee,
+                id_organization
+            } = req.tokenPayload;
 
             await CommentModel.create({
                 text: commentPayload.text,
                 created_date: Sequelize.literal('CURRENT_TIMESTAMP'),
                 id_idea: commentPayload.id_idea,
-                id_employee: id_employee
+                id_employee: id_organization && !id_employee ? null : id_employee,
+                id_organization
             })
 
             res.status(200).json({
@@ -31,9 +35,9 @@ class CommentController {
 
     async getComments(req, res) {
         const id_idea = req.query.id;
-        
+
         const comments = await CommentModel.findAll({where: { id_idea: id_idea }})
-        
+
         if (!comments.length) {
             res.status(200).json({
                 status: true,
@@ -43,13 +47,27 @@ class CommentController {
 
         for (let i = 0; i < comments.length; i++) {
             const id_employee = comments[i].dataValues.id_employee;
-            let { first_name, last_name, isLeader, reg_date } = await AuthService.getUserById(id_employee, 'employee')
+            const id = id_employee ? id_employee : comments[i].dataValues.id_organization;
+            let author = await AuthService.getUserById(id, id_employee ? 'employee' : 'organization')
 
-            comments[i].dataValues.author = {
-                first_name,
-                last_name,
-                isLeader,
-                reg_date
+            if (id_employee) {
+                comments[i].dataValues.author = {
+                    first_name: author.first_name,
+                    last_name: author.last_name,
+                    isLeader: author.isLeader,
+                    reg_date: author.reg_date,
+                    avatarHash: author.avatarHash,
+                    isOrganization: false
+                }
+            } else {
+                comments[i].dataValues.author = {
+                    first_name: author.name,
+                    last_name: null,
+                    isLeader: false,
+                    reg_date: author.created_date,
+                    avatarHash: null,
+                    isOrganization: true
+                }
             }
         }
 

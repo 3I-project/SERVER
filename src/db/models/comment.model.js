@@ -19,8 +19,11 @@ const CommentModel = db.define('comments', {
     },
     id_employee: {
         type: Sequelize.INTEGER,
+    },
+    id_organization: {
+        type: Sequelize.INTEGER,
     }
-}, 
+},
     {
         timestamps: false
     }
