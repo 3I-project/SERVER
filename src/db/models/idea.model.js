@@ -28,6 +28,10 @@ const IdeaModel = db.define('ideas', {
         type: Sequelize.INTEGER,
         allownull: true
     },
+    enableComments: {
+        type: Sequelize.BOOLEAN,
+        allownull: true
+    },
     created: {
         type: Sequelize.DATE
     }

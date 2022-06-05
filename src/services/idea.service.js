@@ -5,7 +5,6 @@ const { IdeaTypeModel } = require('../db/models/ideaType.model');
 const {AuthService} = require("../services/auth.service");
 const {CommentService} = require("../services/comment.service");
 const { IdeaReactionsService } = require("../services/ideaReactions.service");
-const {where} = require("sequelize");
 
 class IdeaService {
     async createIdea(payload, user) {
@@ -15,14 +14,17 @@ class IdeaService {
             title: payload.title,
             message_text: payload.content,
             type_id: payload.type_id,
+            enableComments: payload.enableComments,
             created: Sequelize.literal('CURRENT_TIMESTAMP')
         })
     }
 
     async updateIdea(payload, user) {
+        console.log(payload)
         return await IdeaModel.update({
             title: payload.title,
             message_text: payload.content,
+            enableComments: payload.enableComments
         }, {
             where: { id_idea: payload.id_idea }
         })
