@@ -21,7 +21,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['http://134.0.115.249', 'http://localhost:8080', 'https://frontend-3i.herokuapp.com', 'http://localhost:6500'],
+  origin: ['http://3i-system.ru',
+    'http://134.0.115.249',
+    'http://localhost:8080',
+    'https://frontend-3i.herokuapp.com',
+    'http://localhost:6500'],
   credentials: true,
 }));
 
