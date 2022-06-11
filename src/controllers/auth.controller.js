@@ -44,36 +44,37 @@ class AuthController {
 
   async authorization (req, res) {
     try {
+      // получение данных из запроса
       const { type } = req.body;
-      const { login, password, reCaptchaToken } = req.body.data;
-
-      if (!reCaptchaToken || !reCaptchaToken.length) {
-        return res.httpError(400, {
-          message: 'Bad request'
-        })
-      }
-
-      const response = await reCaptchaService.varifyToken(reCaptchaToken);
-
-      if (!response.status) {
-        return res.httpError(400, {
-          message: 'reCaptcha invalid'
-        })
-      }
-
+      const { login, password } = req.body.data;
+      // проверка существования ключа от теста
+      // if (!reCaptchaToken || !reCaptchaToken.length) {
+      //   return res.httpError(400, {
+      //     message: 'Bad request'
+      //   })
+      // }
+      // верификация ключа
+      // const response = await reCaptchaService.varifyToken(reCaptchaToken);
+      // если ключ неверный, отправляется ошибка
+      // if (!response.status) {
+      //   return res.httpError(400, {
+      //     message: 'reCaptcha invalid'
+      //   })
+      // }
+      // получение пользователя по логину и паролю
       const user = await AuthService.checkUser(login, password, type);
-
+      // если пользователя не существует, отправляется ошибка
       if (!user) {
         throw new Error('Неверный логин или пароль');
       }
-
+      // генерация ключей доступа
       const tokens =  tokenService.generateTokens(user, type);
-
+      // отправка ключей пользователю
       res.status(200).send({
         status: true,
         tokens: tokens
       });
-    } catch(err) {
+    } catch(err) { // при возникновении ошибок
       res.status(400  ).json({
         status: false,
         msg: err.message
