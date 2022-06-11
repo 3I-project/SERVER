@@ -1,5 +1,6 @@
 #ENV 
 .ENV
+.env
 
 #DIR 
 /node_modules
