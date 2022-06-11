@@ -11,7 +11,7 @@ const { initRoutes } = require('./routes/main');
 const db = require('./db/connect');
 const path = require("path");
 // Порт на котором работает сервер
-const PORT = process.env.PORT || 5500;
+const PORT = 5500;
 
 // Подключение промежуточных обработчиков
 app.use('/apiV1/avatar', express.static(path.resolve(__dirname, '../static/avatars')))
@@ -37,7 +37,7 @@ const start = async () => {
     // Запуск сервера
     app.listen(PORT, () => console.log(`[OK] Server runing on PORT: ${ PORT }`));
   } catch(err) {
-    console.log(`[ERROR] ${ err }`);
+	  console.log(`[ERROR] ${ err }`);
   }
 }
 start();
