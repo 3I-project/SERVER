@@ -95,7 +95,7 @@ class AuthController {
           msg: 'Пользователь успешно создан'
         })
       } catch(err) {
-        res.status(401).json({
+        res.status(400).json({
           status: false,
           msg: err.message
         })
